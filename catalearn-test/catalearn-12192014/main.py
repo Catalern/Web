@@ -14,24 +14,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+import os
+#import jinja2
 import webapp2
+import hmac
+import hashlib
+import re
+import cgi
+
+form="""<h1>Home Page:</h1>
+		<a href="/login">Login</a>
+		<a href="/register">Register</a>"""
 
 class MainHandler(webapp2.RequestHandler):
-    def get(self):
-        self.redirect("/home")
+	def get(self):
+		self.redirect("/home")
 
 class HomeHandler(webapp2.RequestHandler):
-    def get(self):
-        self.response.write('Home: Hello world!')
+	def get(self):
+		self.response.out.write(form)
 
 class LoginHandler(webapp2.RequestHandler):
-    def get(self):
-        self.response.write('Login: Hello world!')
+	def get(self):
+		self.response.out.write("""Login: Hello world! <a href="/home">Home</a>""")
 
 class RegisterHandler(webapp2.RequestHandler):
-    def get(self):
-        self.response.write('Register: Hello world!')
-
+	def get(self):
+		self.response.out.write("""Register: Hello world! <a href="/home">Home</a>""")
 
 
 app = webapp2.WSGIApplication([('/', MainHandler), ('/home', HomeHandler), ('/login', LoginHandler), ('/register', RegisterHandler)], debug=True)
