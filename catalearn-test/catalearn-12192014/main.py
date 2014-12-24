@@ -25,7 +25,12 @@ import cgi
 
 form="""<h1>Home Page:</h1>
 		<a href="/login">Login</a>
-		<a href="/register">Register</a>"""
+		<a href="/register">Register</a>
+		<a href="/aboutus">About Us</a>"""
+
+form2="""<h2>About Us</h2>
+		 <p>Nate Bonshire, Graham Fuller, Chris Lambert, 
+		 Brian Bowmaster, and Tommy Mulc </p>"""
 
 class MainHandler(webapp2.RequestHandler):
 	def get(self):
@@ -43,8 +48,12 @@ class RegisterHandler(webapp2.RequestHandler):
 	def get(self):
 		self.response.out.write("""Register: Hello world! <a href="/home">Home</a>""")
 
+class AboutusHandler(webapp2.RequestHandler):
+	def get(self):
+		self.response.out.write(form2)		
 
-app = webapp2.WSGIApplication([('/', MainHandler), ('/home', HomeHandler), ('/login', LoginHandler), ('/register', RegisterHandler)], debug=True)
+
+app = webapp2.WSGIApplication([('/', MainHandler), ('/home', HomeHandler), ('/login', LoginHandler), ('/register', RegisterHandler), ('/aboutus', AboutusHandler)], debug=True)
 
 
 #following three functions use regular expressions
@@ -59,3 +68,4 @@ def verifyPassword(password):
 EMAIL_RE = re.compile(r"^[\S]+@[\S]+\.[\S]+$")
 def verifyEmail(email):
 	return EMAIL_RE.match(email)
+
