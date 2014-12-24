@@ -16,46 +16,75 @@
 #
 
 import os
-#import jinja2
+import jinja2
 import webapp2
-import hmac
 import hashlib
-import re
+import hmac
+import random
+import string
 import cgi
+from google.appengine.ext import db
 
-form="""<h1>Home Page:</h1>
-		<a href="/login">Login</a>
-		<a href="/register">Register</a>"""
+SECRET = "I AM A SECRET"
 
-class MainHandler(webapp2.RequestHandler):
-	def get(self):
-		self.redirect("/home")
+template_dir = os.path.join(os.path.dirname(__file__), 'templates')
+jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
+																autoescape = True)
 
-class HomeHandler(webapp2.RequestHandler):
-	def get(self):
-		self.response.out.write(form)
-
-class LoginHandler(webapp2.RequestHandler):
-	def get(self):
-		self.response.out.write("""Login: Hello world! <a href="/home">Home</a>""")
-
-class RegisterHandler(webapp2.RequestHandler):
-	def get(self):
-		self.response.out.write("""Register: Hello world! <a href="/home">Home</a>""")
-
-
-app = webapp2.WSGIApplication([('/', MainHandler), ('/home', HomeHandler), ('/login', LoginHandler), ('/register', RegisterHandler)], debug=True)
-
-
-#following three functions use regular expressions
-USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
-def verifyUsername(username):
-	return USER_RE.match(username)
+class Handler(webapp2.RequestHandler):
+	def write(self, *a, **kw):
+		self.response.out.write(*a, **kw)
 	
-PASSWORD_RE = re.compile(r"^.{3,20}$")
-def verifyPassword(password):
-	return PASSWORD_RE.match(password)
+	def render_str(self, template, **params):
+		t = jinja_env.get_template(template)
+		return t.render(params)
+		
+	def render(self, template, **kw):
+		self.write(self.render_str(template, **kw))
+																
+class MainHandler(Handler):
+	def get(self):
+		self.render("home.html")
+"""		
+    def get(self):
+		self.response.headers['Content-Type'] = 'text/plain'
+		visits = 0
+		visit_cookie_str = self.request.cookies.get('visits')
+		if visit_cookie_str:
+			cookie_val = check_secure_val(visit_cookie_str)
+			if cookie_val:
+				visits = int(cookie_val)
+		
+		visits += 1
+		new_cookie_val = make_secure_val(str(visits))
+		self.response.headers.add_header(e"Set-Cookie", "visits=%s" % new_cookie_val)
+		
+		if visits > 100000:
+			self.write("Thank You! You are the best!")
+		else:
+			self.write("You've been here %s times!" % visits)
+"""
+app = webapp2.WSGIApplication([('/', MainHandler)], debug=True)
+
+def hash_str(s):
+    return hmac.new(SECRET, s).hexdigest()
+
+def make_secure_val(s):
+    return "%s|%s" % (s, hash_str(s))
 	
-EMAIL_RE = re.compile(r"^[\S]+@[\S]+\.[\S]+$")
-def verifyEmail(email):
-	return EMAIL_RE.match(email)
+def check_secure_val(h):
+	temp = h.split("|")[0]
+	if make_secure_val(temp) == h:
+		return temp
+
+def make_pw_hash(name, pw, salt = None):
+	h = hashlib.sha256(name + pw + salt).hexdigest()
+	return '%s|%s' % (h, salt)
+	
+def make_pw_hash(name, pw):
+	salt = make_salt()
+	return hashlib.sha256(name + pw + salt).hexdigest() + "," + salt	
+	
+def valid_pw(name, pw, h):
+	salt = h.split('|')[1]
+	return h == make_pw_hash(name, pw, salt)
