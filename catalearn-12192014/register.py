@@ -41,31 +41,12 @@ class Handler(webapp2.RequestHandler):
 		
 	def render(self, template, **kw):
 		self.write(self.render_str(template, **kw))
-																
-class MainHandler(Handler):
-	def get(self):
-		self.render("home.html")
-"""		
-    def get(self):
-		self.response.headers['Content-Type'] = 'text/plain'
-		visits = 0
-		visit_cookie_str = self.request.cookies.get('visits')
-		if visit_cookie_str:
-			cookie_val = check_secure_val(visit_cookie_str)
-			if cookie_val:
-				visits = int(cookie_val)
-		
-		visits += 1
-		new_cookie_val = make_secure_val(str(visits))
-		self.response.headers.add_header(e"Set-Cookie", "visits=%s" % new_cookie_val)
-		
-		if visits > 100000:
-			self.write("Thank You! You are the best!")
-		else:
-			self.write("You've been here %s times!" % visits)
-"""
 
-app = webapp2.WSGIApplication([('/', MainHandler)], debug=True)
+class RegisterHandler(Handler):
+	def get(self):
+		self.write("got you")
+
+app = webapp2.WSGIApplication([('/register', RegisterHandler)], debug=True)
 
 def hash_str(s):
     return hmac.new(SECRET, s).hexdigest()
