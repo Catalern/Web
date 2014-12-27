@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
+
 
 import os
 import jinja2
@@ -27,7 +27,7 @@ from google.appengine.ext import db
 
 SECRET = "I AM A SECRET"
 
-template_dir = os.path.join(os.path.dirname(__file__), 'templates')
+template_dir = os.path.join(os.path.dirname(__file__), 'static/templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
 																autoescape = True)
 
@@ -64,7 +64,12 @@ class MainHandler(Handler):
 		else:
 			self.write("You've been here %s times!" % visits)
 """
-app = webapp2.WSGIApplication([('/', MainHandler)], debug=True)
+
+class RegisterHandler(Handler):
+	def get(self):
+		self.render("register.html")
+
+app = webapp2.WSGIApplication([('/', MainHandler), ('/register', RegisterHandler)], debug=True)
 
 def hash_str(s):
     return hmac.new(SECRET, s).hexdigest()

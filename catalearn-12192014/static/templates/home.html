@@ -1,0 +1,17 @@
+{% extends "base-template.html" %}
+
+{% block content %}
+	<div id="loginmodal" style="display:none;">
+		<form method="post" id="login-form" action="/">
+			<label for="username">Username:</label>
+      		<input type="text" id="username" class="txtfield" tabindex="1" />
+
+      		<label for="password">Password:</label>
+      		<input type="text" id="password" class="txtfield" tabindex="2" />
+
+      		<div class="center">
+      			<input type="submit" id="submit-login" value="Login" tabindex="3" />
+      		</div>
+    	</form>
+	</div>
+{% endblock %}
