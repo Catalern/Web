@@ -44,7 +44,7 @@ class Handler(webapp2.RequestHandler):
 
 class RegisterHandler(Handler):
 	def get(self):
-		self.write("got you")
+		self.render('register.html')
 
 app = webapp2.WSGIApplication([('/register', RegisterHandler)], debug=True)
 
