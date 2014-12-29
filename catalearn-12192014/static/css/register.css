@@ -1,0 +1,55 @@
+/*General css*/
+#center {
+	text-align: center;
+}
+
+#top-bar {
+	background-color: #ddd;
+	color: #888;
+	margin: 0;
+	height: 50px;
+	font-size:20pt;
+}
+
+#search-bar {
+	float: right;
+	margin-top: 12px;
+  margin-bottom: 12px;
+	margin-bottom: auto;
+	height: 20px;
+}
+
+.button {
+  display: inline-block;
+	width: 115px;
+ 	height: 30px;
+  background: #4f94cf;
+  margin: 0 auto;
+  font-size: 15pt;
+  text-align: center;
+  border-radius: 3px;
+  float: right;
+  margin-right: 5px;
+  text-decoration: none;
+  color: #FFFFFF;
+  line-height: normal;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  vertical-align: middle;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+}
+
+.button:hover {
+  color: #fff;
+  background-color: #519dde;
+}
+
+
+#top-bar-content, #content {
+	width: 1024px;
+	margin: 0 auto;
+}
