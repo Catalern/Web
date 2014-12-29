@@ -16,6 +16,8 @@ handlers:
   script: main.app
 - url: /register
   script: register.app
+- url: /courses
+  script: courses.app
 
 libraries:
 - name: webapp2

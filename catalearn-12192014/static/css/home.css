@@ -48,6 +48,14 @@
   background-color: #519dde;
 }
 
+.button#courses-button{
+  background: #995799;
+}
+
+.button#courses-button:hover{
+  color: #fff;
+  background: #b851b8;
+}
 
 #top-bar-content, #content {
 	width: 1024px;
